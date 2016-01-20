@@ -24,6 +24,10 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSLocationWhenInUseUsage</key>
+	<string>Let me find you!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>LET ME FIND YOU ALWAYS AND FOREVER</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
