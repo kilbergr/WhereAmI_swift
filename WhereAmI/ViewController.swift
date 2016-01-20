@@ -12,10 +12,20 @@ import CoreLocation
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
-    var locationManager = CLLocationManager()
-    
     @IBOutlet weak var map: MKMapView!
+
+    @IBOutlet weak var alt: UILabel!
     
+    @IBOutlet weak var long: UILabel!
+    
+    @IBOutlet weak var lat: UILabel!
+    
+    @IBOutlet weak var course: UILabel!
+    
+    @IBOutlet weak var speed: UILabel!
+    
+    var locationManager = CLLocationManager()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +41,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        alt.text = "Your altitude is: " + String(locations[0].altitude)
+        long.text = "Your longitude is: " + String(locations[0].coordinate.longitude)
+        lat.text = "Your latitude is: " + String(locations[0].coordinate.latitude)
+        course.text = "Your course is: " + String(locations[0].course)
+        speed.text = "Your speed is: " + String(locations[0].speed)
+        
         let userLocation: CLLocation = locations[0]
         
         let latitude = userLocation.coordinate.latitude
