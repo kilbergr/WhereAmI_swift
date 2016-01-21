@@ -24,8 +24,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @IBOutlet weak var speed: UILabel!
     
+    @IBOutlet weak var whereAmI: UILabel!
+    
     var locationManager = CLLocationManager()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,6 +50,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         speed.text = "Your speed is: " + String(locations[0].speed)
         
         let userLocation: CLLocation = locations[0]
+        CLGeocoder().reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) -> Void in
+            if (error != nil)
+            {
+                print("Reverse geocoder failed with error" + error!.localizedDescription)
+                return
+            }
+            
+            if placemarks!.count > 0
+            {
+                let pm = placemarks![0] as CLPlacemark
+                self.displayLocationInfo(pm)
+            }
+            else
+            {
+                print("Problem with the data received from geocoder")
+            }
+        })
         
         let latitude = userLocation.coordinate.latitude
         let longitude = userLocation.coordinate.longitude
@@ -58,10 +77,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let span: MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
         let location: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
         let region: MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-        
         self.map.setRegion(region, animated: false)
+    }
+    
+    func displayLocationInfo(placemark: CLPlacemark?)
+    {
+        if let _ = placemark
+        {
+            whereAmI.text = String(placemark!.locality!) + ", " + String(placemark!.country!)
+        }
         
     }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError)
+    {
+        print("Error while updating location " + error.localizedDescription)
+    }
+
 
 }
 

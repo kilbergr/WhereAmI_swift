@@ -116,6 +116,7 @@
                         <outlet property="long" destination="XgW-zP-dQZ" id="mdN-V4-uyG"/>
                         <outlet property="map" destination="tOg-be-dvr" id="5jE-cp-qcB"/>
                         <outlet property="speed" destination="b85-PV-T5K" id="v6E-1h-tYC"/>
+                        <outlet property="whereAmI" destination="75J-TR-W72" id="Qrx-LP-Y0q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
