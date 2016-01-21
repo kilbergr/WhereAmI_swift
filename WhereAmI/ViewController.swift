@@ -13,33 +13,21 @@ import CoreLocation
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var map: MKMapView!
-
     @IBOutlet weak var alt: UILabel!
-    
     @IBOutlet weak var long: UILabel!
-    
     @IBOutlet weak var lat: UILabel!
-    
     @IBOutlet weak var course: UILabel!
-    
     @IBOutlet weak var speed: UILabel!
-    
     @IBOutlet weak var whereAmI: UILabel!
     
     var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -51,49 +39,37 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         let userLocation: CLLocation = locations[0]
         CLGeocoder().reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) -> Void in
-            if (error != nil)
-            {
-                print("Reverse geocoder failed with error" + error!.localizedDescription)
+            if (error != nil) {
+                print("Reverse geocoder failed with error: " + error!.localizedDescription)
                 return
             }
-            
-            if placemarks!.count > 0
-            {
+            if placemarks!.count > 0 {
                 let pm = placemarks![0] as CLPlacemark
                 self.displayLocationInfo(pm)
             }
-            else
-            {
+            else {
                 print("Problem with the data received from geocoder")
             }
         })
-        
+        //in order to build the map so that it tracks "user"
         let latitude = userLocation.coordinate.latitude
         let longitude = userLocation.coordinate.longitude
-        
         let latDelta: CLLocationDegrees = 0.05
         let longDelta: CLLocationDegrees = 0.05
-        
         let span: MKCoordinateSpan = MKCoordinateSpanMake(latDelta, longDelta)
         let location: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
         let region: MKCoordinateRegion = MKCoordinateRegionMake(location, span)
         self.map.setRegion(region, animated: false)
     }
     
-    func displayLocationInfo(placemark: CLPlacemark?)
-    {
-        if let _ = placemark
-        {
-            whereAmI.text = String(placemark!.locality!) + ", " + String(placemark!.country!)
+    func displayLocationInfo(placemark: CLPlacemark?) {
+        if let _ = placemark {
+            whereAmI.text = "O! Must be in " + String(placemark!.locality!) + "!"
         }
-        
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError)
-    {
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print("Error while updating location " + error.localizedDescription)
     }
-
-
 }
 
